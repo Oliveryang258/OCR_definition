@@ -131,3 +131,13 @@ else:
 #4,透视变换，将外框矩形摆正，这里这个reshape(4,2)是点，每个点有xy两个参数，乘以ratio是为了把这几个点还原到原始的输入图像当中
 warped = four_point_transform(orig,screenCnt.reshape(4,2)*ratio)
 
+#5,对变换后的图像再进行一个二值处理
+warped = cv2.cvtColor(warped,cv2.COLOR_BGR2GRAY)
+ref = cv2.threshold(warped,100,255,cv2.THRESH_BINARY)[1]
+cv2.imwrite('scan.jpg',ref)
+
+#6,展示结果
+cv_show('original',resize(orig,height= 600))
+cv_show('scanned',resize(ref,height= 600))
+#后续对这个检测到的图像使用ocr检测
+
